@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
 
 from app.modules.notepad.forms import NotepadForm
@@ -16,6 +16,7 @@ def index():
     form = NotepadForm()
     notepads = notepad_service.get_all_by_user(current_user.id)
     return render_template('notepad/index.html', notepads=notepads, form=form)
+
 
 '''
 CREATE
@@ -44,7 +45,6 @@ READ BY ID
 @login_required
 def get_notepad(notepad_id):
     notepad = notepad_service.get_or_404(notepad_id)
-    
     if notepad.user_id != current_user.id:
         flash('You are not authorized to view this notepad', 'error')
         return redirect(url_for('notepad.index'))
